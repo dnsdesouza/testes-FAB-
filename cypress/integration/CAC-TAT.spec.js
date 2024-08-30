@@ -1,5 +1,7 @@
 /// <reference types="Cypress" />
 
+
+
 describe('Central de Atendimento', function() {
 
     beforeEach(function() {
@@ -34,7 +36,7 @@ describe('Central de Atendimento', function() {
         cy.get('#firstName').type('Walmir');
         cy.get('#lastName').type('da Silva')
         cy.get('#email').type('walmir@silva.com')
-        cy.get('#phone-checkbox').click()
+        cy.get('#phone-checkbox').check()
         cy.get('#open-text-area').type(longText , {delay: 0})
         cy.contains('button', 'Enviar').click()
 
@@ -58,45 +60,82 @@ describe('Central de Atendimento', function() {
 
     it('envia o formuário com sucesso usando um comando customizado', function(){
         cy.fillMandatoryFieldsAndSubmit()
-
         cy.get('.success').should('be.visible')
 
     })
 
-    it.only('seleciona um produto (YouTube) por seu texto', function(){
-    //   cy.get('#product').select(2)
-    //   cy.get('#product')
+    it('seleciona um produto (YouTube) por seu texto', function(){
+         //   cy.get('#product')
+        //   cy.get('#product').select(2) //pelo indice
+
       cy.get('#product')
             .select('Cursos')
             .should('have.value','cursos')
+
     })
 
-})
+    it('marca o tipo de atendimento "Feedback"', function(){
+        cy.get('input [type="radio"], [value="feedback"]')
+        .check()
+        .should('have.value', 'feedback')
+
+    })
+
+    it('marca cada tipo de atendimento', function(){
+        cy.get('input[type="radio"]')
+        .should('have.length', 3)
+        .each(function($radio){
+            cy.wrap($radio).check()
+            cy.wrap($radio).should('be.checked')
+
+        })
+    })
+
+    
+    it('marca ambos os check box e depois desmarca', function(){
+        cy.get('input[type="checkbox"]')
+        .check().should('be.checked')
+        .last().uncheck()
+        .should('not.be.checked')
+    })
+
+    it('seleciona um arquivo da pasta fixtures', function(){
+        cy.get('input[type="file"]')
+        .should('not.have.value')
+        .selectFile('./cypress/fixtures/example.json')//para o drag drop>>>> como segundo parametro,{action: 'drag-drop'}
+        .should(function($input){
+            console.log($input)
+            expect($input[0].files[0].name).to.equal("example.json")
+        })
+    })
 
 
 
+    it('seleciona um arquivo utilizando uma fixture para a qual foi dada um alias', function(){
+        cy.fixture('example.json').as('sampleFile')
+        cy.get('input[type="file"]')
+        .selectFile('@sampleFile')
+          .should(function($input){
+            console.log($input)
+            expect($input[0].files[0].name).to.equal("example.json")
+        })
+
+    })
 
 
-    // it.only('verifica o título da aplicação', function() {
-    //     cy.visit('https://ng-app-portal.dev.rancher.ccarj.intraer/envolvimento-justica/');
-        
-    //     cy.get('#username').type('15645097700');
-    //     cy.get('#password').type('12345');
-    //     cy.get('#kc-login').click();
-  
-    //     cy.get(':nth-child(2) > .v-card').click()
-    //     cy.get('.pa-5 > .v-btn > .v-btn__content').click();
-        
-    //     cy.get('#input-21').type('21° DP')
-    //     cy.get('#input-23').type('21° DELEGACIA DE POLÍCIA DO CRUZEIRO')
+    it('verifica que a política de privacidade abre em outra aba sem a necessidade de um clique', function(){
+        cy.get('#privacy a').should('have.attr', 'target', '_blank')
+    })
+    
+
+    it('acessa a página da política de privacidade removendo o target e então clicando no link', function(){
+        cy.get ('#privacy a')
+        .invoke('removeAttr', 'target')
+        .click();
+
+       cy.contains('Talking About Testing').should('be.visible')
+    })
+
  
-    // });
-    
-
-
-
-
-     
-    
-
-  
+ 
+})

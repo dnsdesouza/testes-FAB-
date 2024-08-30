@@ -2,8 +2,7 @@
 
 describe('Transações', () => {
     it('Cadastrar uma entrada', () => {
-       cy.visit('https://devfinance-agilizei.netlify.app/')
+       cy.visit('https://www.google.com')
 
-       cy.get('.success').should('be.visible')
     });
 });

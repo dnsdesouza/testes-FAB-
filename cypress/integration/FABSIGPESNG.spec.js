@@ -2,7 +2,7 @@
 
 
 describe('TestAlfaFABSIGPESNG', function() {
-    it.only('Fazer o login', function() {
+    it('Fazer o login', function() {
         // Executa o login uma vez antes de todos os testes
         cy.visit('https://ng-app-portal.dev.rancher.ccarj.intraer/envolvimento-justica/');
         
@@ -14,36 +14,11 @@ describe('TestAlfaFABSIGPESNG', function() {
 
 
 
-    cy.get('[data-test="idPais"] > .v-input__details')
-
-    cy.get('[data-test="idEstado"] > .v-input__details')
-
-    cy.get('[data-test="idMunicipio"] > .v-input__details')
-
-    cy.get('[data-test="idBairro"] > .v-input__details')
-
-
-    cy.get('[data-test="idTipoLogradouro"] > .v-input__details')
-
-
-
-
-
-
-
-
-
-
-    
-
-
-
     it('Escolhe o card e adiciona', function() {
         // Seleciona o card e realiza ações específicas
         
         cy.get(':nth-child(2) > .v-card').click();
         cy.get('.pa-5 > .v-btn > .v-btn__content').click();
-
     });
 
 
@@ -76,15 +51,5 @@ describe('TestAlfaFABSIGPESNG', function() {
 
        
     });
-
-
-    //////////////////  TESTE FORMULÁRIO
-
-    it.only('Cadastro de delegacia', function() { 
-        cy.get('.flex-container > :nth-child(1) > .v-card').click()
-        cy.get('[data-test="novo-formulario"]').click()
-    })
-    
-    
     
 });
